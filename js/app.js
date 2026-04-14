@@ -1906,11 +1906,9 @@ function setConc(c) {
   calculate();
 }
 
-function setVolume(v) {
-  ILCalc.volume = v;
-  // Highlight active volume chip
-  document.querySelectorAll('.ilcalc-vol-chips .ilcalc-chip').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
+function setVolumeFromInput() {
+  const raw = parseFloat(document.getElementById('ilcalcVolInput').value);
+  ILCalc.volume = (!isNaN(raw) && raw > 0) ? raw : null;
   calculate();
 }
 
