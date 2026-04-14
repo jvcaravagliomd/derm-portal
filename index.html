@@ -35,6 +35,7 @@
       <li><a href="#" class="nav-link" data-section="dosing"><span class="nav-icon">💊</span> Med Dosing</a></li>
       <li><a href="#" class="nav-link" data-section="mdm"><span class="nav-icon">📊</span> MDM Coding</a></li>
       <li><a href="#" class="nav-link" data-section="peds"><span class="nav-icon">👶</span> Peds &amp; Age Guide</a></li>
+      <li><a href="#" class="nav-link" data-section="il-calc"><span class="nav-icon">💉</span> IL Steroid Calc</a></li>
     </ul>
     <div class="sidebar-footer">
       <p>North Florida Dermatology</p>
@@ -157,6 +158,11 @@
           <h3>Peds &amp; Age Guide</h3>
           <p>FDA-approved minimum ages for novel topical therapies and biologics/JAK inhibitors — including Opzelura's new 2-year AD expansion.</p>
           <span class="dash-count" id="peds-count">Loading…</span>
+        </div>
+        <div class="dash-card dash-card--ilcalc" onclick="goTo('il-calc')">
+          <div class="dash-icon">💉</div>
+          <h3>IL Steroid Calculator</h3>
+          <p>Instantly calculate how much Kenalog and bacteriostatic saline to draw up for any intralesional dilution.</p>
         </div>
       </div>
 
@@ -467,6 +473,65 @@ Example: 'DIAGNOSIS: Basal cell carcinoma, nodular type. Margins: involved at de
       </div>
 
       <div id="labGrid" class="lab-grid"></div>
+    </section>
+
+    <!-- ── IL STEROID CALCULATOR ─────────────────────────────────────── -->
+    <section class="section" id="section-il-calc">
+      <h2>💉 Intralesional Steroid Dilution Calculator</h2>
+      <p class="subtitle">Calculate how much Kenalog and bacteriostatic saline to draw up for your desired concentration. Always confirm with the physician before preparing.</p>
+
+      <div class="ilcalc-container">
+
+        <!-- STEP 1: Starting vial -->
+        <div class="ilcalc-step">
+          <div class="ilcalc-step-label">Step 1 — Starting Vial Concentration</div>
+          <div class="ilcalc-vial-btns">
+            <button class="ilcalc-vial-btn" id="vialBtn10" onclick="setVial(10)">
+              <span class="ilcalc-vial-icon">💉</span>
+              <span class="ilcalc-vial-conc">10 mg/mL</span>
+              <span class="ilcalc-vial-sub">Kenalog-10</span>
+            </button>
+            <button class="ilcalc-vial-btn" id="vialBtn40" onclick="setVial(40)">
+              <span class="ilcalc-vial-icon">💉</span>
+              <span class="ilcalc-vial-conc">40 mg/mL</span>
+              <span class="ilcalc-vial-sub">Kenalog-40</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Desired concentration -->
+        <div class="ilcalc-step">
+          <div class="ilcalc-step-label">Step 2 — Desired Final Concentration</div>
+          <div class="ilcalc-conc-chips" id="ilcalcConcChips"></div>
+        </div>
+
+        <!-- STEP 3: Total volume -->
+        <div class="ilcalc-step">
+          <div class="ilcalc-step-label">Step 3 — Total Syringe Volume</div>
+          <div class="ilcalc-vol-chips">
+            <button class="ilcalc-chip" onclick="setVolume(1)">1 mL</button>
+            <button class="ilcalc-chip" onclick="setVolume(2)">2 mL</button>
+            <button class="ilcalc-chip" onclick="setVolume(3)">3 mL</button>
+            <button class="ilcalc-chip" onclick="setVolume(5)">5 mL</button>
+            <button class="ilcalc-chip" onclick="setVolume(10)">10 mL</button>
+          </div>
+        </div>
+
+        <!-- RESULT -->
+        <div class="ilcalc-result" id="ilcalcResult" style="display:none;">
+          <div class="ilcalc-result-title">Draw Up Instructions</div>
+          <div class="ilcalc-draw-rows" id="ilcalcDrawRows"></div>
+          <div class="ilcalc-total-bar" id="ilcalcTotalBar"></div>
+          <div class="ilcalc-steps-box" id="ilcalcStepsBox"></div>
+          <div class="ilcalc-warning">⚠️ Always confirm dilution with the physician. Double-check labels before drawing up.</div>
+        </div>
+
+        <!-- Placeholder before selection -->
+        <div class="ilcalc-placeholder" id="ilcalcPlaceholder">
+          <span>👆 Select a vial, concentration, and volume above to see results</span>
+        </div>
+
+      </div>
     </section>
 
   </main>
