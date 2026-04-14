@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Derm MA Portal</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <span class="logo-icon">🩺</span>
+        <div>
+          <div class="logo-title">Derm MA Portal</div>
+          <div class="logo-subtitle">Medical Assistant Tools</div>
+        </div>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" class="nav-link active" data-section="dashboard"><span class="nav-icon">🏠</span> Dashboard</a></li>
+      <li><a href="#" class="nav-link" data-section="patient-qa"><span class="nav-icon">💬</span> Patient Q&amp;A</a></li>
+      <li><a href="#" class="nav-link" data-section="prior-auth"><span class="nav-icon">📋</span> Prior Authorization</a></li>
+      <li><a href="#" class="nav-link" data-section="derm-library"><span class="nav-icon">📚</span> Derm Library</a></li>
+      <li><a href="#" class="nav-link" data-section="biopsy"><span class="nav-icon">🔬</span> Biopsy Interpreter</a></li>
+      <li><a href="#" class="nav-link" data-section="lab-monitoring"><span class="nav-icon">🧪</span> Lab Monitoring</a></li>
+      <li><a href="#" class="nav-link" data-section="steroid-chart"><span class="nav-icon">💊</span> Steroid Chart</a></li>
+      <li><a href="#" class="nav-link" data-section="triage"><span class="nav-icon">📞</span> After-Hours Triage</a></li>
+      <li><a href="#" class="nav-link" data-section="pregnancy"><span class="nav-icon">🤰</span> Pregnancy Safety</a></li>
+      <li><a href="#" class="nav-link" data-section="procedures"><span class="nav-icon">🩹</span> Procedure Guide</a></li>
+      <li><a href="#" class="nav-link" data-section="melanoma-fu"><span class="nav-icon">📊</span> Melanoma F/U</a></li>
+      <li><a href="#" class="nav-link" data-section="icd10"><span class="nav-icon">🔢</span> ICD-10 Lookup</a></li>
+      <li><a href="#" class="nav-link" data-section="handouts"><span class="nav-icon">📄</span> Patient Handouts</a></li>
+      <li><a href="#" class="nav-link" data-section="dosing"><span class="nav-icon">💊</span> Med Dosing</a></li>
+      <li><a href="#" class="nav-link" data-section="mdm"><span class="nav-icon">📊</span> MDM Coding</a></li>
+      <li><a href="#" class="nav-link" data-section="peds"><span class="nav-icon">👶</span> Peds &amp; Age Guide</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <p>North Florida Dermatology</p>
+      <p class="version">Portal v1.0</p>
+      <button class="admin-settings-btn" id="adminSettingsBtn" onclick="adminSettingsClicked()">⚙️ Settings</button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content" id="main-content">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <div class="topbar-search" id="globalSearchBar" style="display:none;">
+        <input type="text" id="globalSearch" placeholder="Search across all tools…" />
+        <button onclick="runGlobalSearch()">Search</button>
+      </div>
+      <div class="topbar-right">
+        <span class="badge-today">📅 <span id="todayDate"></span></span>
+      </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════ DASHBOARD ═══ -->
+    <section class="section active" id="section-dashboard">
+      <div class="page-header">
+        <h1>Welcome to the Derm MA Portal</h1>
+        <p class="subtitle">Your quick-reference tool for patient communication, prior authorizations, and clinical support.</p>
+      </div>
+      <div class="dashboard-grid">
+        <div class="dash-card" onclick="goTo('patient-qa')">
+          <div class="dash-icon">💬</div>
+          <h3>Patient Q&amp;A</h3>
+          <p>Answer common post-visit patient questions quickly and accurately.</p>
+          <span class="dash-count" id="qa-count">Loading…</span>
+        </div>
+        <div class="dash-card" onclick="goTo('prior-auth')">
+          <div class="dash-icon">📋</div>
+          <h3>Prior Authorization</h3>
+          <p>Step-by-step PA guidance for common dermatology medications and procedures.</p>
+          <span class="dash-count" id="pa-count">Loading…</span>
+        </div>
+        <div class="dash-card" onclick="goTo('derm-library')">
+          <div class="dash-icon">📚</div>
+          <h3>Derm Library</h3>
+          <p>Reference library of common dermatology conditions and patient-friendly talking points.</p>
+          <span class="dash-count" id="lib-count">Loading…</span>
+        </div>
+        <div class="dash-card" onclick="goTo('biopsy')">
+          <div class="dash-icon">🔬</div>
+          <h3>Biopsy Interpreter</h3>
+          <p>Paste a biopsy report to get a plain-language explanation and patient talking points.</p>
+          <span class="dash-count">Paste &amp; Go</span>
+        </div>
+        <div class="dash-card" onclick="goTo('lab-monitoring')">
+          <div class="dash-icon">🧪</div>
+          <h3>Lab Monitoring</h3>
+          <p>Baseline and ongoing lab requirements for systemic derm medications, with color-coded safety thresholds.</p>
+          <span class="dash-count" id="lab-count">Loading…</span>
+        </div>
+      </div>
+
+      <div class="dashboard-grid" style="margin-top:0;">
+        <div class="dash-card" onclick="goTo('steroid-chart')">
+          <div class="dash-icon">💊</div>
+          <h3>Steroid Chart</h3>
+          <p>Class I–VII potency reference with brand/generic examples, body-site guidance, and FTU dosing.</p>
+          <span class="dash-count">7 classes</span>
+        </div>
+        <div class="dash-card" onclick="goTo('triage')">
+          <div class="dash-icon">📞</div>
+          <h3>After-Hours Triage</h3>
+          <p>Scripted decision guide for after-hours calls — ER now, urgent care, call AM, or home care.</p>
+          <span class="dash-count" id="triage-count">Loading…</span>
+        </div>
+        <div class="dash-card" onclick="goTo('pregnancy')">
+          <div class="dash-icon">🤰</div>
+          <h3>Pregnancy Safety</h3>
+          <p>Derm medication safety by trimester and breastfeeding, with color-coded ratings and key warnings.</p>
+          <span class="dash-count" id="preg-count">Loading…</span>
+        </div>
+        <div class="dash-card" onclick="goTo('procedures')">
+          <div class="dash-icon">🩹</div>
+          <h3>Procedure Guide</h3>
+          <p>Pre- and post-procedure instructions by procedure type for Mohs, laser, biopsy, filler, and more.</p>
+          <span class="dash-count" id="proc-count">Loading…</span>
+        </div>
+        <div class="dash-card" onclick="goTo('melanoma-fu')">
+          <div class="dash-icon">📊</div>
+          <h3>Melanoma Follow-Up</h3>
+          <p>Stage-based surveillance schedules, imaging recommendations, and referral guidance.</p>
+          <span class="dash-count">Stage 0 → IV</span>
+        </div>
+        <div class="dash-card" onclick="goTo('icd10')">
+          <div class="dash-icon">🔢</div>
+          <h3>ICD-10 Lookup</h3>
+          <p>Searchable reference of the most common dermatology diagnosis codes — organized by condition.</p>
+          <span class="dash-count" id="icd-count">Loading…</span>
+        </div>
+        <div class="dash-card dash-card--handouts" onclick="goTo('handouts')">
+          <div class="dash-icon">📄</div>
+          <h3>Patient Handouts</h3>
+          <p>Print-ready patient education sheets for AK field therapy, procedures, viral conditions, and more.</p>
+          <span class="dash-count" id="handout-count">Loading…</span>
+        </div>
+        <div class="dash-card dash-card--dosing" onclick="goTo('dosing')">
+          <div class="dash-icon">💊</div>
+          <h3>Med Dosing Reference</h3>
+          <p>Quick-reference dosing for common derm medications — antibiotics, antihistamines, antivirals, biologics, and more.</p>
+          <span class="dash-count" id="dosing-count">Loading…</span>
+        </div>
+        <div class="dash-card dash-card--mdm" onclick="goTo('mdm')">
+          <div class="dash-icon">📊</div>
+          <h3>MDM Coding Guide</h3>
+          <p>AMA 2021 Medical Decision Making complexity levels for dermatologic diagnoses — know which status to select in your EHR.</p>
+          <span class="dash-count" id="mdm-count">Loading…</span>
+        </div>
+        <div class="dash-card dash-card--peds" onclick="goTo('peds')">
+          <div class="dash-icon">👶</div>
+          <h3>Peds &amp; Age Guide</h3>
+          <p>FDA-approved minimum ages for novel topical therapies and biologics/JAK inhibitors — including Opzelura's new 2-year AD expansion.</p>
+          <span class="dash-count" id="peds-count">Loading…</span>
+        </div>
+      </div>
+
+      <div class="quick-tips">
+        <h3>📌 Quick Reminders</h3>
+        <ul>
+          <li>Always verify medication instructions with the chart before relaying to patients.</li>
+          <li>For urgent symptoms (spreading infection, severe allergic reaction), direct patients to call 911 or go to the ER immediately.</li>
+          <li>Never interpret biopsy results to a patient without physician review first.</li>
+          <li>Document all patient phone communications in the chart.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ PATIENT Q&A ═══ -->
+    <section class="section" id="section-patient-qa">
+      <div class="page-header">
+        <h1>💬 Patient Q&amp;A</h1>
+        <p class="subtitle">Search for common patient questions and find scripted, physician-approved answers.</p>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="qaSearch" placeholder="Search questions… (e.g. biopsy care, steroid, sun)" oninput="filterQA()" />
+        <div class="filter-chips" id="qaCategories"></div>
+      </div>
+      <div id="qaResults" class="qa-list"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ PRIOR AUTH ═══ -->
+    <section class="section" id="section-prior-auth">
+      <div class="page-header">
+        <h1>📋 Prior Authorization Guide</h1>
+        <p class="subtitle">Step-by-step instructions for navigating insurance PA for common dermatology treatments.</p>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="paSearch" placeholder="Search medication or condition… (e.g. Dupixent, psoriasis, acne)" oninput="filterPA()" />
+      </div>
+      <div id="paList" class="pa-list"></div>
+      <div id="paDetail" class="pa-detail" style="display:none;"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ DERM LIBRARY ═══ -->
+    <section class="section" id="section-derm-library">
+      <div class="page-header">
+        <h1>📚 Dermatology Reference Library</h1>
+        <p class="subtitle">Quick reference for common conditions — plain-language summaries and MA talking points.</p>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="libSearch" placeholder="Search condition… (e.g. eczema, psoriasis, acne)" oninput="filterLibrary()" />
+        <div class="filter-chips" id="libCategories"></div>
+      </div>
+      <div id="libResults" class="lib-grid"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ BIOPSY INTERPRETER ═══ -->
+    <section class="section" id="section-biopsy">
+      <div class="page-header">
+        <h1>🔬 Biopsy Report Interpreter</h1>
+        <p class="subtitle">Paste a pathology report below. The tool will identify the diagnosis and provide a plain-language explanation and patient-friendly talking points for your use <strong>after physician review</strong>.</p>
+      </div>
+
+      <div class="biopsy-warning">
+        ⚠️ <strong>Important:</strong> Always have the physician review results before discussing with the patient. This tool is a reference aid, not a substitute for clinical judgment.
+      </div>
+
+      <div class="biopsy-input-area">
+        <label for="biopsyText">Paste Pathology Report Text:</label>
+        <textarea id="biopsyText" rows="10" placeholder="Paste the full biopsy/pathology report here…
+
+Example: 'DIAGNOSIS: Basal cell carcinoma, nodular type. Margins: involved at deep margin…'"></textarea>
+        <div class="biopsy-actions">
+          <button class="btn-primary" onclick="interpretBiopsy()">🔬 Interpret Report</button>
+          <button class="btn-secondary" onclick="clearBiopsy()">Clear</button>
+        </div>
+      </div>
+
+      <div id="biopsyResult" class="biopsy-result" style="display:none;"></div>
+
+      <div class="biopsy-help">
+        <h3>💡 Tips for Best Results</h3>
+        <ul>
+          <li>Paste the full report including diagnosis, margins, and special findings.</li>
+          <li>Include depth measurements (mm) if present — these affect melanoma staging.</li>
+          <li>If the report is unclear, flag it for physician clarification before calling the patient.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ STEROID CHART ═══ -->
+    <section class="section" id="section-steroid-chart">
+      <div class="page-header">
+        <h1>💊 Topical Steroid Potency Chart</h1>
+        <p class="subtitle">All agents listed by class (I = most potent → VII = least potent). Drugs within the same class are near-equivalent alternatives. Search by generic name, brand, or vehicle.</p>
+      </div>
+      <div class="search-bar" style="margin-bottom:20px;">
+        <input type="text" id="steroidSearch" placeholder="Search steroid… (e.g. clobetasol, triamcinolone, Elocon, ointment)" />
+      </div>
+      <div id="steroidClassGrid" class="steroid-class-list"></div>
+      <div class="steroid-ref-section">
+        <div class="steroid-ref-tabs">
+          <button class="s-tab active" id="ftu-tab" onclick="showSteroidTab('ftu')">📏 Fingertip Unit (FTU) Dosing</button>
+          <button class="s-tab" id="vehicle-tab" onclick="showSteroidTab('vehicle')">🧴 Vehicle / Formulation Guide</button>
+        </div>
+        <div id="steroid-ftu-panel" class="steroid-panel"></div>
+        <div id="steroid-vehicle-panel" class="steroid-panel" style="display:none;"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ AFTER-HOURS TRIAGE ═══ -->
+    <section class="section" id="section-triage">
+      <div class="page-header">
+        <h1>📞 After-Hours Triage Guide</h1>
+        <p class="subtitle">Scripted guidance for after-hours patient calls. Find the scenario, read the exact script, and know when to send patients to the ER versus home.</p>
+      </div>
+      <div class="triage-legend">
+        <span class="triage-pill er-now">🔴 ER NOW</span>
+        <span class="triage-pill er-soon">🟡 ER / Urgent Care</span>
+        <span class="triage-pill call-am">🟠 Call Office AM</span>
+        <span class="triage-pill home">🟢 Home Management</span>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="triageSearch" placeholder="Search scenario… (e.g. bleeding, blister, fever, rash)" oninput="filterTriage()" />
+        <div class="filter-chips" id="triageCategories"></div>
+      </div>
+      <div id="triageResults" class="triage-list"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ PREGNANCY SAFETY ═══ -->
+    <section class="section" id="section-pregnancy">
+      <div class="page-header">
+        <h1>🤰 Pregnancy &amp; Lactation Safety</h1>
+        <p class="subtitle">Safety ratings for dermatology medications by trimester and breastfeeding. Always confirm with the physician before relaying to patients.</p>
+      </div>
+      <div class="preg-legend">
+        <span class="preg-pill safe">✅ Safe</span>
+        <span class="preg-pill caution">⚠️ Caution</span>
+        <span class="preg-pill avoid">🚫 Avoid</span>
+        <span class="preg-pill contraindicated">❌ Contraindicated</span>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="pregnancySearch" placeholder="Search medication… (e.g. tretinoin, dupilumab, doxycycline)" oninput="filterPregnancy()" />
+        <div class="filter-chips" id="pregnancyCategories"></div>
+      </div>
+      <div id="pregnancyTable" class="pregnancy-table-wrapper"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ PROCEDURE GUIDE ═══ -->
+    <section class="section" id="section-procedures">
+      <div class="page-header">
+        <h1>🩹 Procedure Prep &amp; Aftercare Guide</h1>
+        <p class="subtitle">What to tell patients before and after every common dermatology procedure. Click any card to view the full instructions.</p>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="procedureSearch" placeholder="Search procedure… (e.g. Mohs, laser, biopsy, filler)" oninput="filterProcedures()" />
+        <div class="filter-chips" id="procedureCategories"></div>
+      </div>
+      <div id="procedureGrid" class="proc-grid"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ MELANOMA F/U ═══ -->
+    <section class="section" id="section-melanoma-fu">
+      <div class="page-header">
+        <h1>📊 Melanoma Follow-Up Schedule</h1>
+        <p class="subtitle">Stage-based surveillance schedules per NCCN guidelines. Click any stage for full detail including imaging, labs, SLNB guidance, and MA action items.</p>
+      </div>
+      <div id="melanomaStageCards" class="mel-stage-grid"></div>
+      <div id="melanomaNotes" class="mel-notes"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ ICD-10 LOOKUP ═══ -->
+    <section class="section" id="section-icd10">
+      <div class="page-header">
+        <h1>🔢 ICD-10 Quick Lookup</h1>
+        <p class="subtitle">Search by code, condition name, or plain-English term. Click any row to copy the code.</p>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="icd10Search" placeholder="Search code or condition… (e.g. L20.9, eczema, melanoma, BCC)" oninput="filterICD10()" />
+        <div class="filter-chips" id="icd10Categories"></div>
+      </div>
+      <div id="icd10Table" class="icd10-wrapper"></div>
+      <div id="copyToast" class="copy-toast" style="display:none;">✅ Code copied!</div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ PATIENT HANDOUTS ═══ -->
+    <section class="section" id="section-handouts">
+      <div class="page-header">
+        <h1>📄 Patient Handout Library</h1>
+        <p class="subtitle">Print-ready patient education documents. Click <strong>Open &amp; Print</strong> to open the Word file — print from Word for best quality. Use the search or category chips to filter.</p>
+      </div>
+
+      <div class="handout-info-bar">
+        📁 <strong>Files location:</strong> All handouts are in the <code>handouts/</code> folder inside this portal. Keep the folder and <code>index.html</code> together on the same drive.
+      </div>
+
+      <div class="search-bar">
+        <input type="text" id="handoutSearch" placeholder="Search handouts… (e.g. Effudex, warts, rosacea, PDT)" oninput="filterHandouts()" />
+        <div class="filter-chips" id="handoutCategories"></div>
+      </div>
+
+      <div id="handoutGrid" class="handout-grid"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ MED DOSING ═══ -->
+    <section class="section" id="section-dosing">
+      <div class="page-header">
+        <h1>💊 Medication Dosing Quick Reference</h1>
+        <p class="subtitle">Standard dosing for common dermatology medications. Search by drug name, brand, or indication. Always verify with the prescribing physician before relaying to patients.</p>
+      </div>
+
+      <div class="dosing-warning">
+        ⚠️ <strong>Reference only.</strong> Dosing may vary based on patient weight, renal/hepatic function, and physician preference. Never adjust or initiate medications without physician direction.
+      </div>
+
+      <div class="search-bar">
+        <input type="text" id="dosingSearch" placeholder="Search drug or indication… (e.g. doxycycline, acne, antifungal, valacyclovir)" oninput="filterDosing()" />
+        <div class="filter-chips" id="dosingCategories"></div>
+      </div>
+
+      <div id="dosingGrid" class="dosing-grid"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ MDM CODING ═══ -->
+    <section class="section" id="section-mdm">
+      <div class="page-header">
+        <h1>📊 MDM Medical Decision Making — Coding Guide</h1>
+        <p class="subtitle">AMA 2021 E/M coding complexity levels for common dermatologic diagnoses. Search by condition or ICD-10 to find the correct MDM "Problem Status" for your EHR visit note.</p>
+      </div>
+
+      <div class="mdm-explainer">
+        <div class="mdm-explainer-grid">
+          <div class="mdm-level-badge mdm-minimal">
+            <div class="mdm-badge-label">Straightforward</div>
+            <div class="mdm-badge-visits">99202 / 99212</div>
+          </div>
+          <div class="mdm-level-badge mdm-low">
+            <div class="mdm-badge-label">Low Complexity</div>
+            <div class="mdm-badge-visits">99203 / 99213</div>
+          </div>
+          <div class="mdm-level-badge mdm-moderate">
+            <div class="mdm-badge-label">Moderate Complexity</div>
+            <div class="mdm-badge-visits">99204 / 99214</div>
+          </div>
+          <div class="mdm-level-badge mdm-high">
+            <div class="mdm-badge-label">High Complexity</div>
+            <div class="mdm-badge-visits">99205 / 99215</div>
+          </div>
+        </div>
+        <p class="mdm-explainer-note">MDM level is determined by the <strong>Problems</strong>, <strong>Data</strong>, and <strong>Risk</strong> columns — 2 of 3 must meet the level. The table below shows the <em>Problem Status</em> column contribution for each diagnosis.</p>
+      </div>
+
+      <div class="search-bar">
+        <input type="text" id="mdmSearch" placeholder="Search condition or ICD-10… (e.g. psoriasis, atopic, L20, melanoma)" oninput="filterMDM()" />
+        <div class="filter-chips" id="mdmCategories"></div>
+      </div>
+
+      <div id="mdmTable" class="mdm-table-wrapper"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ PEDS & AGE GUIDE ═══ -->
+    <section class="section" id="section-peds">
+      <div class="page-header">
+        <h1>👶 Pediatric &amp; Age Approvals Guide</h1>
+        <p class="subtitle">FDA-approved minimum ages for novel topical therapies, biologics, and JAK inhibitors in dermatology. Always verify current labeling — approvals expand frequently.</p>
+      </div>
+
+      <div class="peds-warning">
+        ⚠️ <strong>For MA reference only.</strong> Age approvals reflect current FDA labeling at time of last update. Off-label use in younger patients does occur under physician discretion. Always confirm with the supervising physician.
+      </div>
+
+      <!-- Sub-tab navigation -->
+      <div class="peds-tabs">
+        <button class="peds-tab active" id="peds-tab-topical" onclick="showPedsTab('topical')">🧴 Novel Topical Therapies</button>
+        <button class="peds-tab" id="peds-tab-biologics" onclick="showPedsTab('biologics')">💉 Biologics &amp; JAK Inhibitors — Pediatric Approvals</button>
+      </div>
+
+      <!-- Topical Therapies Panel -->
+      <div id="peds-panel-topical" class="peds-panel">
+        <div class="search-bar" style="margin-top:16px;">
+          <input type="text" id="topicalSearch" placeholder="Search drug or mechanism… (e.g. ruxolitinib, PDE4, atopic, vitiligo)" oninput="filterTopicalAge()" />
+          <div class="filter-chips" id="topicalCategories"></div>
+        </div>
+        <div id="topicalGrid" class="peds-card-grid"></div>
+      </div>
+
+      <!-- Biologics Peds Panel -->
+      <div id="peds-panel-biologics" class="peds-panel" style="display:none;">
+        <div class="search-bar" style="margin-top:16px;">
+          <input type="text" id="pedsSearch" placeholder="Search drug, condition, or age… (e.g. dupilumab, psoriasis, 2 years)" oninput="filterPedsBiologics()" />
+          <div class="filter-chips" id="pedsConditions"></div>
+        </div>
+        <div id="pedsTable" class="peds-table-wrapper"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ LAB MONITORING ═══ -->
+    <section class="section" id="section-lab-monitoring">
+      <div class="page-header">
+        <h1>🧪 Systemic Medication Lab Monitoring</h1>
+        <p class="subtitle">Baseline and ongoing lab requirements for systemic dermatology medications. Includes color-coded safety thresholds to guide decision-making.</p>
+      </div>
+
+      <div class="lab-warning">
+        ⚠️ <strong>For reference only.</strong> All lab results and dosing decisions must be reviewed and acted upon by the supervising physician. Do not adjust or hold medications without physician direction.
+      </div>
+
+      <div class="search-bar">
+        <input type="text" id="labSearch" placeholder="Search medication… (e.g. Rinvoq, dupilumab, methotrexate)" oninput="filterLabs()" />
+        <div class="filter-chips" id="labTypeFilters"></div>
+      </div>
+
+      <div id="labGrid" class="lab-grid"></div>
+    </section>
+
+  </main>
+
+  <!-- Modal -->
+  <div id="modal-overlay" class="modal-overlay" onclick="closeModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Admin Modals Container -->
+  <div id="admin-modals-container"></div>
+
+  <!-- Data files must load before app.js -->
+  <script src="js/data/steroid-chart-data.js"></script>
+  <script src="js/data/triage-data.js"></script>
+  <script src="js/data/pregnancy-data.js"></script>
+  <script src="js/data/procedure-data.js"></script>
+  <script src="js/data/melanoma-surveillance-data.js"></script>
+  <script src="js/data/icd10-data.js"></script>
+  <script src="js/data/lab-monitoring-data.js"></script>
+  <script src="js/data/patient-qa-data.js"></script>
+  <script src="js/data/prior-auth-data.js"></script>
+  <script src="js/data/derm-library-data.js"></script>
+  <script src="js/data/biopsy-patterns.js"></script>
+  <script src="js/data/handouts-data.js"></script>
+  <script src="js/data/dosing-data.js"></script>
+  <script src="js/data/mdm-data.js"></script>
+  <script src="js/data/pediatric-approvals-data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
