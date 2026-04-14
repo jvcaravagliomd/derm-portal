@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initDosing();
   initMDM();
   initPedsGuide();
+  initILCalc();
   initPatientQA();
   initPriorAuth();
   initDermLibrary();
@@ -1851,4 +1852,149 @@ function renderPedsBiologics(items) {
       </tbody>
     </table>
   `;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   IL STEROID DILUTION CALCULATOR
+   Dilution formula: C1·V1 = C2·V2
+   V_kenalog = (desiredConc × totalVol) / startingConc
+   V_saline  = totalVol - V_kenalog
+════════════════════════════════════════════════════════════════════════════ */
+const ILCalc = {
+  vial: null,       // 10 or 40
+  conc: null,       // desired mg/mL
+  volume: null,     // total mL
+
+  // Concentrations available per starting vial
+  concOptions: {
+    10: [1, 2.5, 5, 10],
+    40: [1, 2.5, 5, 10, 20, 40]
+  }
+};
+
+function initILCalc() {
+  // Volume chips are static in HTML — nothing to render on init
+  // Concentration chips depend on vial selection, rendered on setVial()
+}
+
+function setVial(mg) {
+  ILCalc.vial = mg;
+  ILCalc.conc = null; // reset downstream
+
+  // Highlight selected vial button
+  document.getElementById('vialBtn10').classList.toggle('active', mg === 10);
+  document.getElementById('vialBtn40').classList.toggle('active', mg === 40);
+
+  // Render concentration chips for this vial
+  const container = document.getElementById('ilcalcConcChips');
+  const options = ILCalc.concOptions[mg];
+  container.innerHTML = options.map(c => {
+    const label = c === mg ? `${c} mg/mL <span style="font-size:0.75rem;opacity:0.7">(no dilution)</span>` : `${c} mg/mL`;
+    return `<button class="ilcalc-chip" onclick="setConc(${c})" id="concChip${c.toString().replace('.','_')}">${label}</button>`;
+  }).join('');
+
+  calculate();
+}
+
+function setConc(c) {
+  ILCalc.conc = c;
+  // Highlight active chip
+  document.querySelectorAll('#ilcalcConcChips .ilcalc-chip').forEach(btn => btn.classList.remove('active'));
+  const chipId = 'concChip' + c.toString().replace('.','_');
+  const chip = document.getElementById(chipId);
+  if (chip) chip.classList.add('active');
+  calculate();
+}
+
+function setVolume(v) {
+  ILCalc.volume = v;
+  // Highlight active volume chip
+  document.querySelectorAll('.ilcalc-vol-chips .ilcalc-chip').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  calculate();
+}
+
+function calculate() {
+  const resultEl = document.getElementById('ilcalcResult');
+  const placeholderEl = document.getElementById('ilcalcPlaceholder');
+
+  if (!ILCalc.vial || !ILCalc.conc || !ILCalc.volume) {
+    resultEl.style.display = 'none';
+    placeholderEl.style.display = 'block';
+    return;
+  }
+
+  const C1 = ILCalc.vial;
+  const C2 = ILCalc.conc;
+  const Vtotal = ILCalc.volume;
+
+  // C1·V1 = C2·Vtotal  →  V1 = C2·Vtotal / C1
+  const Vkenalog = parseFloat(((C2 * Vtotal) / C1).toFixed(2));
+  const Vsaline  = parseFloat((Vtotal - Vkenalog).toFixed(2));
+
+  // Show result
+  placeholderEl.style.display = 'none';
+  resultEl.style.display = 'block';
+
+  const noDilution = (C2 === C1);
+
+  // Draw rows
+  const drawRowsEl = document.getElementById('ilcalcDrawRows');
+  if (noDilution) {
+    drawRowsEl.innerHTML = `
+      <div class="ilcalc-draw-row kenalog">
+        <span class="ilcalc-draw-icon">💉</span>
+        <span class="ilcalc-draw-vol">${fmt(Vtotal)} mL</span>
+        <span class="ilcalc-draw-label">
+          <strong>Kenalog (${C1} mg/mL)</strong>
+          Use directly from vial — no dilution needed
+        </span>
+      </div>`;
+  } else {
+    drawRowsEl.innerHTML = `
+      <div class="ilcalc-draw-row kenalog">
+        <span class="ilcalc-draw-icon">💉</span>
+        <span class="ilcalc-draw-vol">${fmt(Vkenalog)} mL</span>
+        <span class="ilcalc-draw-label">
+          <strong>Kenalog (${C1} mg/mL)</strong>
+          Triamcinolone acetonide
+        </span>
+      </div>
+      <div class="ilcalc-draw-row saline">
+        <span class="ilcalc-draw-icon">🧪</span>
+        <span class="ilcalc-draw-vol">${fmt(Vsaline)} mL</span>
+        <span class="ilcalc-draw-label">
+          <strong>Bacteriostatic Normal Saline</strong>
+          For dilution
+        </span>
+      </div>`;
+  }
+
+  // Total bar
+  document.getElementById('ilcalcTotalBar').innerHTML = `
+    <span class="ilcalc-total-left">Total syringe volume</span>
+    <span class="ilcalc-total-right">= ${fmt(Vtotal)} mL &nbsp;@&nbsp; <strong>${C2} mg/mL</strong></span>`;
+
+  // Step-by-step instructions
+  const stepsEl = document.getElementById('ilcalcStepsBox');
+  if (noDilution) {
+    stepsEl.innerHTML = `
+      <div class="step-title">📋 Instructions</div>
+      1. Draw ${fmt(Vtotal)} mL of Kenalog (${C1} mg/mL) directly into syringe.<br>
+      2. No saline needed — concentration is already ${C2} mg/mL.<br>
+      3. Label syringe and confirm with physician before injecting.`;
+  } else {
+    stepsEl.innerHTML = `
+      <div class="step-title">📋 Draw-Up Instructions</div>
+      1. Draw <strong>${fmt(Vkenalog)} mL</strong> of Kenalog (${C1} mg/mL) into syringe.<br>
+      2. Draw <strong>${fmt(Vsaline)} mL</strong> of bacteriostatic normal saline.<br>
+      3. Mix gently by inverting syringe 2–3 times.<br>
+      4. Final concentration: <strong>${C2} mg/mL</strong> in ${fmt(Vtotal)} mL total.<br>
+      5. Label syringe and confirm with physician before injecting.`;
+  }
+}
+
+function fmt(n) {
+  // Show clean numbers: 0.50 → 0.5, 1.00 → 1
+  return parseFloat(n.toFixed(2)).toString();
 }
