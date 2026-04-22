@@ -616,4 +616,49 @@ const LAB_MONITORING = [
     ]
   },
 
+  // ─── ANTIMALARIALS ─────────────────────────────────────────
+
+  {
+    id: "hydroxychloroquine",
+    drug: "Hydroxychloroquine",
+    brand: "Plaquenil (generic widely available)",
+    type: "Antimalarial",
+    typeColor: "blue",
+    indication: "Lupus Erythematosus (DLE, SCLE, SLE), Dermatomyositis, Lichen Planus, Sarcoidosis, Porphyria Cutanea Tarda",
+    rems: null,
+    blackBox: false,
+    baselineLabs: [
+      { test: "CBC with differential", reason: "Baseline blood counts — hydroxychloroquine can rarely cause cytopenias" },
+      { test: "CMP (LFTs + Creatinine/eGFR)", reason: "Liver function and renal function — drug is renally cleared; dose adjustment may be needed in renal impairment" },
+      { test: "G6PD level", reason: "G6PD deficiency increases risk of hemolytic anemia — screen especially in at-risk populations (African, Mediterranean, Middle Eastern descent)" },
+      { test: "Fasting Glucose", reason: "Hydroxychloroquine lowers blood glucose — important baseline in diabetic patients" },
+      { test: "Urinalysis", reason: "Baseline renal assessment, particularly for lupus patients who may have nephritis" },
+      { test: "Ophthalmologic Exam (baseline)", reason: "AAO 2016 guideline: baseline exam within 12 months of starting. Documents pre-existing macular/retinal disease and establishes reference for future screening." },
+      { test: "EKG (if cardiac history)", reason: "Hydroxychloroquine can prolong QT interval — obtain baseline if history of cardiac arrhythmia, long QT syndrome, or concurrent QT-prolonging medications" },
+    ],
+    ongoingLabs: [
+      { test: "CBC + CMP (LFTs + Creatinine)", frequency: "Annually", notes: "Routine annual monitoring of blood counts, liver function, and renal function" },
+      { test: "Ophthalmologic Exam (annual)", frequency: "Annually after 5 years of use; sooner if high-risk", notes: "AAO 2016 guideline: annual retinal screening starting at year 5. HIGH-RISK patients (dose >5 mg/kg/day RBW, renal disease eGFR <60, tamoxifen use, pre-existing retinal/macular disease) should start annual screening at year 1." },
+      { test: "Fasting Glucose", frequency: "Annually — more frequently in diabetic patients", notes: "HCQ lowers blood sugar; diabetic patients on insulin or secretagogues may need medication adjustments" },
+    ],
+    watchFor: [
+      { test: "Visual Changes / Retinopathy", threshold: "Any new visual symptoms or abnormal screening OCT/visual fields", action: "STOP therapy — refer to ophthalmology immediately", severity: "danger", detail: "HCQ retinopathy is IRREVERSIBLE once established. Do not wait for the next scheduled visit. Symptoms include decreased central vision, difficulty reading, seeing missing areas, or color vision changes. Early detection on screening is critical." },
+      { test: "Hemoglobin / Hematocrit", threshold: "Significant drop below baseline — especially in G6PD-deficient patients", action: "Hold therapy — evaluate for hemolytic anemia", severity: "danger", detail: "G6PD-deficient patients are at risk for hemolytic anemia. Check G6PD if not done at baseline. Discontinue if hemolysis confirmed." },
+      { test: "AST or ALT", threshold: "> 3× ULN", action: "Hold therapy — evaluate for hepatotoxicity", severity: "caution", detail: "Hepatotoxicity is rare but documented. Recheck in 2–4 weeks. Discontinue if persistent elevation." },
+      { test: "Creatinine / eGFR", threshold: "eGFR < 30 mL/min", action: "Dose reduce or avoid — use with caution", severity: "caution", detail: "Hydroxychloroquine is renally cleared. Significant renal impairment leads to drug accumulation and increased retinopathy risk." },
+      { test: "Blood Glucose", threshold: "Symptomatic hypoglycemia — especially in insulin-dependent diabetics", action: "Notify physician — may need insulin/medication dose reduction", severity: "caution", detail: "HCQ has clinically meaningful glucose-lowering effect. Diabetic patients on insulin or sulfonylureas are at risk for hypoglycemia." },
+      { test: "QTc Interval", threshold: "QTc > 500 ms or increase >60 ms from baseline", action: "Notify physician — review concurrent QT-prolonging medications", severity: "caution", detail: "QT prolongation risk increases when combined with other QT-prolonging drugs (azithromycin, fluoroquinolones, antifungals). Review full medication list." },
+    ],
+    notes: [
+      "Dosing: MAX dose is ≤5 mg/kg/day based on REAL body weight (not ideal body weight) per AAO 2016 guidelines. Exceeding this significantly increases retinopathy risk.",
+      "Typical adult dose: 200 mg twice daily or 400 mg once daily. Do not exceed 400 mg/day in most patients.",
+      "Retinopathy risk factors: dose >5 mg/kg/day RBW, duration >5 years, renal disease (eGFR<60), concurrent tamoxifen use, pre-existing macular or retinal disease.",
+      "Onset of action is slow — therapeutic effect for skin/autoimmune indications may take 2–6 months. Counsel patients on realistic expectations.",
+      "Generally considered safe in pregnancy — commonly continued in lupus patients who are pregnant. OB co-management recommended.",
+      "Live vaccines should be used with caution (HCQ is immunomodulatory, though less so than biologics/immunosuppressants).",
+      "Take with food or milk to reduce GI upset (nausea is the most common early side effect).",
+      "Avoid antacids within 4 hours of dosing — they reduce absorption.",
+    ]
+  },
+
 ];
